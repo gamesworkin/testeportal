@@ -26,6 +26,52 @@ document.getElementById('login-btn').addEventListener('click', () => {
         .catch(err => { alert(err.message); btn.innerText = "Entrar"; btn.disabled = false; });
 });
 
+// ... (Configuração Firebase conforme anterior)
+
+// Verificar se é admin ao logar
+auth.onAuthStateChanged(user => {
+    const adminPanel = document.getElementById('admin-panel');
+    if (user && user.email === "admin@admin.com") {
+        adminPanel.style.display = 'block';
+    } else {
+        adminPanel.style.display = 'none';
+    }
+});
+
+// Função para Salvar Cards no Realtime Database
+function salvarCard() {
+    const titulo = document.getElementById('novo-titulo').value;
+    db.ref('servicos').push({
+        titulo: titulo,
+        descricao: "Descrição padrão do serviço"
+    }).then(() => alert("Card criado com sucesso!"));
+}
+
+// Função para deletar (Adicione um botão 'Excluir' dentro do card)
+function excluirCard(id) {
+    db.ref('servicos/' + id).remove();
+}
+
+// Melhoria do botão de login
+document.getElementById('login-btn').onclick = function() {
+    const btn = this;
+    btn.innerText = "Logando...";
+    btn.disabled = true;
+    
+    auth.signInWithEmailAndPassword(
+        document.getElementById('email').value,
+        document.getElementById('password').value
+    ).then(() => {
+        document.getElementById('modal-admin').style.display = 'none';
+        btn.innerText = "Entrar";
+        btn.disabled = false;
+    }).catch(err => {
+        alert("Erro: " + err.message);
+        btn.innerText = "Entrar";
+        btn.disabled = false;
+    });
+};
+
 // Exemplo de busca de dados no Realtime Database
 function carregarCards() {
     db.ref('servicos').on('value', (snapshot) => {
