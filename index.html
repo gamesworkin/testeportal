@@ -10,6 +10,13 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 </head>
 <body>
+    <!-- Painel Administrativo (Escondido por padrão) -->
+<div id="admin-panel" style="display:none; padding: 20px; border-top: 2px solid var(--accent);">
+    <h2>Painel Administrativo</h2>
+    <input type="text" id="novo-titulo" placeholder="Título do Serviço">
+    <button onclick="salvarCard()" class="btn-neon">Salvar Novo Card</button>
+</div>
+
     <div class="bg-animated"></div>
 
     <header id="main-header">
