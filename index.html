@@ -4,43 +4,70 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Workin’Store | Portal</title>
+    <!-- CSS Externo -->
     <link rel="stylesheet" href="style.css">
+    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 </head>
 <body>
-    <!-- Painel Administrativo (Escondido por padrão) -->
-<div id="admin-panel" style="display:none; padding: 20px; border-top: 2px solid var(--accent);">
-    <h2>Painel Administrativo</h2>
-    <input type="text" id="novo-titulo" placeholder="Título do Serviço">
-    <button onclick="salvarCard()" class="btn-neon">Salvar Novo Card</button>
-</div>
 
+    <!-- Background Animado -->
     <div class="bg-animated"></div>
 
+    <!-- Cabeçalho -->
     <header id="main-header">
-        <nav id="nav-links"></nav>
-        <button id="btn-admin">Acesso Restrito</button>
+        <div class="logo">Workin’Store</div>
+        <nav id="nav-links">
+            <ul id="menu-items">
+                <!-- Links gerados via JS -->
+            </ul>
+        </nav>
+        <button id="btn-admin" class="btn-neon">Acesso Restrito</button>
     </header>
 
+    <!-- Vitrine de Produtos -->
     <main>
-        <div id="vitrine" class="vitrine"></div>
-        <section id="servicos" class="servicos-grid"></section>
+        <section id="vitrine" class="vitrine">
+            <!-- Imagens do GitHub via JS -->
+        </section>
+
+        <!-- Cards de Serviço -->
+        <section id="servicos" class="servicos-grid">
+            <!-- Cards gerados via JS -->
+        </section>
+
+        <!-- Painel Admin (Aparece apenas para admin) -->
+        <section id="admin-panel" class="hidden">
+            <h2>Gerenciamento</h2>
+            <div class="admin-controls">
+                <button onclick="exportarDados()" class="btn-neon">Exportar JSON</button>
+                <button onclick="importarDados()" class="btn-neon">Importar JSON</button>
+                <div id="editor-area"></div>
+            </div>
+        </section>
     </main>
 
-    <!-- Modal Admin -->
+    <!-- Modal Login -->
     <div id="modal-admin" class="modal">
         <div class="modal-content">
-            <input type="email" id="email" placeholder="Email">
-            <input type="password" id="password" placeholder="Senha">
-            <button id="login-btn">Entrar</button>
+            <h3>Login Administrativo</h3>
+            <input type="email" id="email-admin" placeholder="Email">
+            <input type="password" id="password-admin" placeholder="Senha">
+            <button id="login-btn" class="btn-neon">Entrar</button>
         </div>
     </div>
 
-    <!-- Modal Geral -->
-    <div id="modal-generic" class="modal"><div class="modal-content" id="modal-body"></div></div>
+    <!-- Modal Dinâmico (Serviços/Links) -->
+    <div id="modal-generic" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div id="modal-body"></div>
+        </div>
+    </div>
 
+    <!-- JS Externo -->
     <script src="script.js"></script>
 </body>
 </html>
