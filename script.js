@@ -1,42 +1,48 @@
-const bar = document.getElementById('pb'); 
-const pct = document.getElementById('percent');
-let val = 0;
+const firebaseConfig = {
+  apiKey: "AIzaSyDiAP2IvsfPac29qzFA71sbLYuizVxZ9HQ",
+  authDomain: "portal-workin-store.firebaseapp.com",
+  databaseURL: "https://portal-workin-store-default-rtdb.firebaseio.com",
+  projectId: "portal-workin-store",
+  storageBucket: "portal-workin-store.firebasestorage.app",
+  messagingSenderId: "803334158041",
+  appId: "1:803334158041:web:5ef4069e7ec3a5973970c8"
+};
 
-function update() {
-    val += 0.8; // Velocidade do carregamento
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.database();
+
+// Lógica de Login
+document.getElementById('login-btn').addEventListener('click', () => {
+    const btn = document.getElementById('login-btn');
+    btn.innerText = "Logando...";
+    btn.disabled = true;
     
-    if(val >= 100) {
-        val = 100;
-        bar.style.width = val + '%';
-        pct.innerText = '100%';
-        
-        // Aguarda 1 segundo antes de reiniciar
-        setTimeout(() => {
-            val = 0;
-            update();
-        }, 1000);
-    } else {
-        bar.style.width = val + '%';
-        pct.innerText = Math.floor(val) + '%';
-        requestAnimationFrame(update);
-    }
+    const email = document.getElementById('email').value;
+    const pass = document.getElementById('password').value;
+
+    auth.signInWithEmailAndPassword(email, pass)
+        .then(() => alert("Bem-vindo Admin"))
+        .catch(err => { alert(err.message); btn.innerText = "Entrar"; btn.disabled = false; });
+});
+
+// Exemplo de busca de dados no Realtime Database
+function carregarCards() {
+    db.ref('servicos').on('value', (snapshot) => {
+        const servicos = snapshot.val();
+        const container = document.getElementById('servicos');
+        container.innerHTML = '';
+        Object.values(servicos).forEach(s => {
+            container.innerHTML += `<div class="card" onclick="abrirModal('${s.titulo}')"><h3>${s.titulo}</h3></div>`;
+        });
+    });
 }
 
-update();
+// Inicializar vitrine e cards
+window.onload = carregarCards;
 
-// Efeito de pulsação suave no botão do WhatsApp
-const waButton = document.querySelector('.whatsapp-float');
-if (waButton) {
-    waButton.style.animation = "pulse 2s infinite";
-    
-    // Injetando o keyframe da animação via JS para não precisar mexer no CSS
-    const style = document.createElement('style');
-    style.innerHTML = `
-        @keyframes pulse {
-            0% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0.7); }
-            70% { box-shadow: 0 0 0 15px rgba(37, 211, 102, 0); }
-            100% { box-shadow: 0 0 0 0 rgba(37, 211, 102, 0); }
-        }
-    `;
-    document.head.appendChild(style);
+function abrirModal(titulo) {
+    const modal = document.getElementById('modal-generic');
+    modal.style.display = 'flex';
+    document.getElementById('modal-body').innerHTML = `<h2>${titulo}</h2><button>Acessar</button>`;
 }
