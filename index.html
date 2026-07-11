@@ -4,70 +4,66 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Workin’Store | Portal</title>
-    <!-- CSS Externo -->
     <link rel="stylesheet" href="style.css">
-    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 </head>
 <body>
 
-    <!-- Background Animado -->
     <div class="bg-animated"></div>
 
-    <!-- Cabeçalho -->
     <header id="main-header">
         <div class="logo">Workin’Store</div>
         <nav id="nav-links">
-            <ul id="menu-items">
-                <!-- Links gerados via JS -->
-            </ul>
+            <ul id="menu-items"></ul>
         </nav>
-        <button id="btn-admin" class="btn-neon">Acesso Restrito</button>
+        <!-- Botão mais discreto -->
+        <button id="btn-admin" class="btn-subtle">Acesso Restrito</button>
     </header>
 
-    <!-- Vitrine de Produtos -->
     <main>
-        <section id="vitrine" class="vitrine">
-            <!-- Imagens do GitHub via JS -->
-        </section>
+        <section id="vitrine" class="vitrine"></section>
 
-        <!-- Cards de Serviço -->
-        <section id="servicos" class="servicos-grid">
-            <!-- Cards gerados via JS -->
-        </section>
+        <section id="servicos" class="servicos-grid"></section>
 
-        <!-- Painel Admin (Aparece apenas para admin) -->
+        <!-- Painel Admin Expandido -->
         <section id="admin-panel" class="hidden">
-            <h2>Gerenciamento</h2>
+            <h2>Painel Administrativo</h2>
             <div class="admin-controls">
                 <button onclick="exportarDados()" class="btn-neon">Exportar JSON</button>
                 <button onclick="importarDados()" class="btn-neon">Importar JSON</button>
-                <div id="editor-area"></div>
+                <div id="editor-area">
+                    <h3>Configurações do Portal</h3>
+                    <!-- Campos para gerenciamento de links/cards -->
+                </div>
             </div>
         </section>
     </main>
 
-    <!-- Modal Login -->
+    <footer>
+        <p>&copy; Workin’Store 2026 - Todos os direitos reservados</p>
+    </footer>
+
+    <!-- Modal Login Ajustado -->
     <div id="modal-admin" class="modal">
-        <div class="modal-content">
-            <h3>Login Administrativo</h3>
-            <input type="email" id="email-admin" placeholder="Email">
-            <input type="password" id="password-admin" placeholder="Senha">
+        <div class="modal-content login-box">
+            <h3>Login Admin</h3>
+            <div class="input-group">
+                <input type="email" id="email-admin" placeholder="Email">
+                <input type="password" id="password-admin" placeholder="Senha">
+            </div>
             <button id="login-btn" class="btn-neon">Entrar</button>
         </div>
     </div>
 
-    <!-- Modal Dinâmico (Serviços/Links) -->
     <div id="modal-generic" class="modal">
         <div class="modal-content">
-            <span class="close-modal">&times;</span>
+            <span class="close-modal" onclick="document.getElementById('modal-generic').style.display='none'">&times;</span>
             <div id="modal-body"></div>
         </div>
     </div>
 
-    <!-- JS Externo -->
     <script src="script.js"></script>
 </body>
 </html>
