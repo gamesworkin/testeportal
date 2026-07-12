@@ -21,6 +21,7 @@ async function processarLogin() {
     const email = document.getElementById('email-admin').value;
     const pass = document.getElementById('password-admin').value;
     
+    // Trava o botão e altera o texto
     loginBtn.innerText = "Logando...";
     loginBtn.disabled = true;
 
@@ -35,9 +36,10 @@ async function processarLogin() {
 }
 
 loginBtn.addEventListener('click', processarLogin);
-document.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter' && loginModal.style.display === 'flex') processarLogin();
-});
+
+// Suporte para tecla Enter nos campos de input
+document.getElementById('email-admin').addEventListener('keypress', (e) => { if (e.key === 'Enter') processarLogin(); });
+document.getElementById('password-admin').addEventListener('keypress', (e) => { if (e.key === 'Enter') processarLogin(); });
 
 // --- Gestão de Conteúdo ---
 function renderizarPortal() {
