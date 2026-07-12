@@ -31,11 +31,11 @@
                 
                 <div class="admin-section">
                     <h3>Gestão de Cabeçalho</h3>
-                    <input type="text" id="menu-nome" placeholder="Nome">
+                    <input type="text" id="menu-nome" placeholder="Nome do Link">
                     <input type="text" id="menu-valor" placeholder="URL ou Conteúdo">
                     <input type="number" id="menu-ordem" placeholder="Ordem (ex: 1)">
                     <div class="radio-group">
-                        <label><input type="radio" name="tipo" value="link" checked> Link</label>
+                        <label><input type="radio" name="tipo" value="link" checked> Link Direto</label>
                         <label><input type="radio" name="tipo" value="modal"> Modal</label>
                     </div>
                     <button onclick="salvarMenu()" class="btn-neon">Salvar Link</button>
@@ -45,32 +45,45 @@
                 <div class="admin-section">
                     <h3>Gestão de Cards</h3>
                     <input type="text" id="card-titulo" placeholder="Título">
-                    <input type="text" id="card-logo" placeholder="URL Logo">
+                    <input type="text" id="card-logo" placeholder="URL da Logo">
                     <input type="number" id="card-ordem" placeholder="Ordem">
                     <textarea id="card-desc" placeholder="Descrição"></textarea>
-                    <input type="text" id="card-link" placeholder="Link Botão">
+                    <input type="text" id="card-link" placeholder="Link do botão 'Saiba Mais'">
                     <button onclick="salvarCard()" class="btn-neon">Salvar Card</button>
                     <ul id="lista-cards-admin" class="admin-list"></ul>
+                </div>
+
+                <div class="admin-section">
+                    <h3>Sistema</h3>
+                    <button onclick="exportarDados()" class="btn-neon">Exportar JSON</button>
+                    <button onclick="importarDados()" class="btn-neon">Importar JSON</button>
                 </div>
             </div>
         </section>
     </main>
 
-    <footer><p>&copy; 2026 Workin’Store</p></footer>
+    <footer>
+        <p>&copy; Workin’Store 2026 - Todos os direitos reservados</p>
+    </footer>
 
-    <!-- Modais -->
-    <div id="modal-admin" class="modal"><div class="modal-content login-box">
-        <span class="close-modal" onclick="document.getElementById('modal-admin').style.display='none'">&times;</span>
-        <h3>Login</h3>
-        <input type="email" id="email-admin" placeholder="Email">
-        <input type="password" id="password-admin" placeholder="Senha">
-        <button id="login-btn" class="btn-neon">Entrar</button>
-    </div></div>
+    <div id="modal-admin" class="modal">
+        <div class="modal-content login-box">
+            <span class="close-modal" onclick="document.getElementById('modal-admin').style.display='none'">&times;</span>
+            <h3>Login Administrativo</h3>
+            <div class="input-group">
+                <input type="email" id="email-admin" placeholder="Email">
+                <input type="password" id="password-admin" placeholder="Senha">
+            </div>
+            <button id="login-btn" class="btn-neon">Entrar</button>
+        </div>
+    </div>
 
-    <div id="modal-generic" class="modal"><div class="modal-content">
-        <span class="close-modal" onclick="document.getElementById('modal-generic').style.display='none'">&times;</span>
-        <div id="modal-body"></div>
-    </div></div>
+    <div id="modal-generic" class="modal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="document.getElementById('modal-generic').style.display='none'">&times;</span>
+            <div id="modal-body"></div>
+        </div>
+    </div>
 
     <script src="script.js"></script>
 </body>
