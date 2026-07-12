@@ -1,4 +1,4 @@
-// CONFIGURAÇÃO FIREBASE - PREENCHA COM SEUS DADOS
+// CONFIGURAÇÃO FIREBASE
 const firebaseConfig = {
   apiKey: "AIzaSyDiAP2IvsfPac29qzFA71sbLYuizVxZ9HQ",
   authDomain: "portal-workin-store.firebaseapp.com",
