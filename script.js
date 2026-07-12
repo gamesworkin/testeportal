@@ -58,7 +58,7 @@ function renderizarPortal() {
         
         const menuArray = Object.entries(data.menu || {}).sort((a,b) => (a[1].ordem || 0) - (b[1].ordem || 0));
         menuArray.forEach(([id, item]) => {
-            nav.innerHTML += `<li><a onclick="abrirMenu('${item.nome}', '${item.valor}', '${item.tipo}'); toggleMenu();">${item.nome}</a></li>`;
+            nav.innerHTML += `<li><a onclick="abrirMenu('${item.nome.replace(/'/g, "\\'")}', '${item.valor.replace(/'/g, "\\'")}', '${item.tipo}'); toggleMenu();">${item.nome}</a></li>`;
             listMenu.innerHTML += `<li>${item.nome} <button onclick="editar('menu', '${id}')" class="btn-subtle">Editar</button> <button onclick="deletar('menu/${id}')" class="btn-subtle">Excluir</button></li>`;
         });
 
@@ -70,7 +70,7 @@ function renderizarPortal() {
         const cardsArray = Object.entries(data.cards || {}).sort((a,b) => (a[1].ordem || 0) - (b[1].ordem || 0));
         cardsArray.forEach(([id, c]) => {
             grid.innerHTML += `
-                <div class="card" onclick="abrirModalServico('${c.titulo}', '${c.desc}', '${c.logo}', '${c.link}')">
+                <div class="card" onclick="abrirModalServico('${c.titulo.replace(/'/g, "\\'")}', '${c.desc.replace(/'/g, "\\'")}', '${c.logo}', '${c.link}')">
                     <img src="${c.logo}" style="width:40px; margin-bottom:10px;">
                     <h3>${c.titulo}</h3>
                 </div>`;
