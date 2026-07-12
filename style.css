@@ -38,10 +38,10 @@ body {
 }
 .btn-subtle:hover { color: var(--accent); border-color: var(--accent); }
 
-/* Main ajustado para empurrar o rodapé */
+/* Main */
 main { flex-grow: 1; display: flex; flex-direction: column; }
 
-/* Painel Admin Organizado */
+/* Painel Admin */
 .admin-wrapper { max-width: 800px; margin: 20px auto; padding: 20px; width: 100%; }
 .admin-section { 
     background: rgba(255,255,255,0.05); padding: 20px; border: 1px solid #444; 
@@ -70,8 +70,9 @@ main { flex-grow: 1; display: flex; flex-direction: column; }
 .modal-content { 
     background: #111; padding: 30px; border: 2px solid var(--accent); border-radius: 15px; 
     width: 90%; max-width: 450px; text-align: center; max-height: 80vh; overflow-y: auto;
-    word-wrap: break-word;
+    word-wrap: break-word; position: relative;
 }
+.close-modal { position: absolute; top: 10px; right: 20px; font-size: 24px; cursor: pointer; color: white; }
 .login-box { display: flex; flex-direction: column; gap: 15px; }
 .input-group input { padding: 12px; border-radius: 5px; border: 1px solid #444; background: #222; color: white; width: 100%; }
 
