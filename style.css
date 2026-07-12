@@ -29,35 +29,36 @@ body {
 }
 
 #nav-links ul { display: flex; list-style: none; gap: 20px; }
-#nav-links a { color: white; text-decoration: none; transition: 0.3s; }
+#nav-links a { color: white; text-decoration: none; cursor: pointer; transition: 0.3s; }
 #nav-links a:hover { color: var(--accent); }
 
-/* Botão Acesso Restrito/Logout (Discreto) */
 .btn-subtle {
     background: transparent; border: 1px solid rgba(255,255,255,0.3); color: rgba(255,255,255,0.5);
     padding: 5px 10px; cursor: pointer; font-size: 0.8rem; transition: 0.3s;
 }
 .btn-subtle:hover { color: var(--accent); border-color: var(--accent); }
 
-/* Login e Admin */
-.login-box { display: flex; flex-direction: column; gap: 15px; }
-.input-group { display: flex; flex-direction: column; gap: 10px; }
-.input-group input { padding: 12px; border-radius: 5px; border: 1px solid #444; background: #222; color: white; }
-
-.admin-controls { background: rgba(255,255,255,0.05); padding: 20px; border-radius: 10px; margin: 20px 40px; }
-.editor-box { display: flex; flex-direction: column; gap: 10px; max-width: 300px; margin: 0 auto; }
-.editor-box input { padding: 10px; border-radius: 5px; border: 1px solid #444; background: #222; color: white; }
+/* Painel Admin */
+.admin-controls { 
+    background: rgba(255,255,255,0.05); padding: 25px; border-radius: 10px; 
+    margin: 20px auto; max-width: 600px; display: flex; flex-direction: column; gap: 15px;
+}
+.admin-controls input, .admin-controls textarea { 
+    padding: 12px; border-radius: 5px; border: 1px solid #444; background: #222; color: white; width: 100%;
+}
+.admin-controls label { display: flex; align-items: center; gap: 10px; cursor: pointer; }
 
 /* Grid de Cards */
 main { flex: 1; }
 .servicos-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; padding: 40px; }
 .card { background: rgba(255,255,255,0.05); padding: 20px; border: 1px solid var(--accent); text-align: center; cursor: pointer; transition: 0.3s; }
 .card:hover { transform: translateY(-10px); box-shadow: var(--neon-shadow); }
+.card img { max-width: 50px; margin-bottom: 10px; }
 
 /* Botões Neon */
 .btn-neon {
     background: transparent; color: var(--accent); border: 2px solid var(--accent);
-    padding: 10px 20px; cursor: pointer; transition: 0.4s; text-transform: uppercase; letter-spacing: 2px;
+    padding: 10px 20px; cursor: pointer; transition: 0.4s; text-transform: uppercase; letter-spacing: 1px;
 }
 .btn-neon:hover { background: var(--accent); color: #000; box-shadow: var(--neon-shadow); }
 
@@ -68,7 +69,6 @@ footer { text-align: center; padding: 20px; font-size: 0.8rem; color: rgba(255,2
 .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); justify-content: center; align-items: center; z-index: 1000; }
 .modal-content { background: #111; padding: 40px; border: 2px solid var(--accent); border-radius: 15px; width: 90%; max-width: 400px; text-align: center; }
 
-/* Responsividade */
 @media (max-width: 768px) {
     .servicos-grid { grid-template-columns: 1fr 1fr; }
     #main-header { flex-direction: column; gap: 15px; }
