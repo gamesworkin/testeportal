@@ -38,8 +38,11 @@ body {
 }
 .btn-subtle:hover { color: var(--accent); border-color: var(--accent); }
 
+/* Main ajustado para empurrar o rodapé */
+main { flex-grow: 1; display: flex; flex-direction: column; }
+
 /* Painel Admin Organizado */
-.admin-wrapper { max-width: 800px; margin: 20px auto; padding: 20px; }
+.admin-wrapper { max-width: 800px; margin: 20px auto; padding: 20px; width: 100%; }
 .admin-section { 
     background: rgba(255,255,255,0.05); padding: 20px; border: 1px solid #444; 
     border-radius: 10px; margin-bottom: 20px; display: flex; flex-direction: column; gap: 10px;
@@ -62,15 +65,16 @@ body {
 }
 .btn-neon:hover { background: var(--accent); color: #000; box-shadow: var(--neon-shadow); }
 
-/* Modais Ajustados */
+/* Modais */
 .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); justify-content: center; align-items: center; z-index: 1000; }
 .modal-content { 
     background: #111; padding: 30px; border: 2px solid var(--accent); border-radius: 15px; 
     width: 90%; max-width: 450px; text-align: center; max-height: 80vh; overflow-y: auto;
-    word-wrap: break-word; /* Ajuste para o texto não sair da caixa */
+    word-wrap: break-word;
 }
 .login-box { display: flex; flex-direction: column; gap: 15px; }
 .input-group input { padding: 12px; border-radius: 5px; border: 1px solid #444; background: #222; color: white; width: 100%; }
 
-footer { text-align: center; padding: 20px; font-size: 0.8rem; color: rgba(255,255,255,0.5); background: rgba(0,0,0,0.5); }
+/* Rodapé */
+footer { text-align: center; padding: 20px; font-size: 0.8rem; color: rgba(255,255,255,0.5); background: rgba(0,0,0,0.5); width: 100%; }
 .hidden { display: none; }
