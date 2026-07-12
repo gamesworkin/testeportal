@@ -5,78 +5,64 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Workin’Store | Portal</title>
     <link rel="stylesheet" href="style.css">
-    <!-- Firebase SDKs -->
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 </head>
 <body>
 
-    <!-- Background Animado -->
     <div class="bg-animated"></div>
 
-    <!-- Cabeçalho -->
     <header id="main-header">
         <div class="logo">Workin’Store</div>
         <nav id="nav-links">
-            <ul id="menu-items">
-                <li><a href="#">Home</a></li>
-                <li><a href="#">Contato</a></li>
-                <li><a href="#">Quem Somos</a></li>
-            </ul>
+            <ul id="menu-items"></ul>
         </nav>
-        <!-- Botão de Acesso Restrito / Logout -->
         <button id="btn-admin" class="btn-subtle">Acesso Restrito</button>
     </header>
 
     <main>
-        <!-- Vitrine de Produtos -->
         <section id="vitrine" class="vitrine"></section>
-
-        <!-- Cards de Serviço -->
         <section id="servicos" class="servicos-grid"></section>
 
         <!-- Painel Administrativo -->
         <section id="admin-panel" class="hidden">
-            <h2>Painel Administrativo</h2>
+            <h2>Gerenciamento do Portal</h2>
+            
+            <!-- Gestão do Cabeçalho -->
             <div class="admin-controls">
-                <div class="editor-box">
-                    <h3>Adicionar Novo Card</h3>
-                    <input type="text" id="add-titulo" placeholder="Título">
-                    <input type="text" id="add-desc" placeholder="Descrição">
-                    <button onclick="adicionarCard()" class="btn-neon">Salvar Card</button>
-                </div>
-                <hr style="margin: 20px 0; border: 0; border-top: 1px solid #444;">
+                <h3>Menu do Cabeçalho</h3>
+                <input type="text" id="menu-nome" placeholder="Nome do Link">
+                <label><input type="radio" name="tipo" value="link" checked> Link Direto</label>
+                <label><input type="radio" name="tipo" value="modal"> Modal</label>
+                <input type="text" id="menu-valor" placeholder="URL ou Conteúdo do Modal">
+                <button onclick="salvarMenu()" class="btn-neon">Salvar no Cabeçalho</button>
+            </div>
+
+            <!-- Gestão dos Cards -->
+            <div class="admin-controls">
+                <h3>Cards de Serviço</h3>
+                <input type="text" id="card-titulo" placeholder="Título">
+                <input type="text" id="card-logo" placeholder="URL da Logo">
+                <textarea id="card-desc" placeholder="Descrição"></textarea>
+                <input type="text" id="card-link" placeholder="Link do botão 'Saiba Mais'">
+                <button onclick="salvarCard()" class="btn-neon">Salvar Card</button>
+            </div>
+
+            <div class="admin-controls">
                 <button onclick="exportarDados()" class="btn-neon">Exportar JSON</button>
                 <button onclick="importarDados()" class="btn-neon">Importar JSON</button>
             </div>
         </section>
     </main>
 
-    <!-- Rodapé -->
     <footer>
         <p>&copy; Workin’Store 2026 - Todos os direitos reservados</p>
     </footer>
 
-    <!-- Modal Login -->
-    <div id="modal-admin" class="modal">
-        <div class="modal-content login-box">
-            <h3>Login Administrativo</h3>
-            <div class="input-group">
-                <input type="email" id="email-admin" placeholder="Email">
-                <input type="password" id="password-admin" placeholder="Senha">
-            </div>
-            <button id="login-btn" class="btn-neon">Entrar</button>
-        </div>
-    </div>
-
-    <!-- Modal Genérico -->
-    <div id="modal-generic" class="modal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="document.getElementById('modal-generic').style.display='none'">&times;</span>
-            <div id="modal-body"></div>
-        </div>
-    </div>
+    <!-- Modais -->
+    <div id="modal-admin" class="modal"><div class="modal-content"><input type="email" id="email-admin" placeholder="Email"><input type="password" id="password-admin" placeholder="Senha"><button id="login-btn" class="btn-neon">Entrar</button></div></div>
+    <div id="modal-generic" class="modal"><div class="modal-content"><span class="close-modal" onclick="document.getElementById('modal-generic').style.display='none'">&times;</span><div id="modal-body"></div></div></div>
 
     <script src="script.js"></script>
 </body>
