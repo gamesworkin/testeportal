@@ -9,7 +9,6 @@ const firebaseConfig = {
   appId: "1:803334158041:web:5ef4069e7ec3a5973970c8"
 };
 
-
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.database();
@@ -40,7 +39,7 @@ document.addEventListener('keypress', (e) => {
     if (e.key === 'Enter' && loginModal.style.display === 'flex') processarLogin();
 });
 
-// --- Gestão de Conteúdo (Renderização e Deleção) ---
+// --- Gestão de Conteúdo ---
 function renderizarPortal() {
     db.ref('conteudo').on('value', (snapshot) => {
         const data = snapshot.val() || {};
@@ -51,8 +50,8 @@ function renderizarPortal() {
         nav.innerHTML = ''; listMenu.innerHTML = '';
         
         Object.entries(data.menu || {}).forEach(([id, item]) => {
-            nav.innerHTML += `<li><a href="#" onclick="abrirMenu('${item.nome}', '${item.valor}', '${item.tipo}')">${item.nome}</a></li>`;
-            listMenu.innerHTML += `<li>${item.nome} <button onclick="deletar('menu/${id}')" class="btn-subtle">Excluir</button></li>`;
+            nav.innerHTML += `<li><a onclick="abrirMenu('${item.nome}', '${item.valor}', '${item.tipo}')">${item.nome}</a></li>`;
+            listMenu.innerHTML += `<li>${item.nome} <button onclick="deletar('menu/${id}')" class="btn-subtle" style="padding: 2px 5px;">X</button></li>`;
         });
 
         // Render Cards
@@ -63,10 +62,10 @@ function renderizarPortal() {
         Object.entries(data.cards || {}).forEach(([id, c]) => {
             grid.innerHTML += `
                 <div class="card" onclick="abrirModalServico('${c.titulo}', '${c.desc}', '${c.logo}', '${c.link}')">
-                    <img src="${c.logo}" alt="logo">
+                    <img src="${c.logo}" style="width:40px; margin-bottom:10px;">
                     <h3>${c.titulo}</h3>
                 </div>`;
-            listCards.innerHTML += `<li>${c.titulo} <button onclick="deletar('cards/${id}')" class="btn-subtle">Excluir</button></li>`;
+            listCards.innerHTML += `<li>${c.titulo} <button onclick="deletar('cards/${id}')" class="btn-subtle" style="padding: 2px 5px;">X</button></li>`;
         });
     });
 }
@@ -88,29 +87,29 @@ function salvarCard() {
 }
 
 function deletar(path) {
-    if(confirm("Deseja excluir este item?")) db.ref('conteudo/' + path).remove();
+    if(confirm("Confirmar exclusão deste item?")) db.ref('conteudo/' + path).remove();
 }
 
 // --- Modais ---
 function abrirMenu(nome, valor, tipo) {
     if (tipo === 'link') window.open(valor, '_blank');
     else {
-        document.getElementById('modal-body').innerHTML = `<h2>${nome}</h2><p>${valor}</p>`;
+        document.getElementById('modal-body').innerHTML = `<h2>${nome}</h2><p style="margin-top:20px;">${valor}</p>`;
         document.getElementById('modal-generic').style.display = 'flex';
     }
 }
 
 function abrirModalServico(titulo, desc, logo, link) {
     document.getElementById('modal-body').innerHTML = `
-        <img src="${logo}" style="width:50px">
+        <img src="${logo}" style="width:60px; margin-bottom:15px;">
         <h2>${titulo}</h2>
-        <p style="margin: 20px 0;">${desc}</p>
+        <p style="margin: 20px 0; word-wrap: break-word;">${desc}</p>
         <button class="btn-neon" onclick="window.open('${link}', '_blank')">Acessar</button>
     `;
     document.getElementById('modal-generic').style.display = 'flex';
 }
 
-// --- Autenticação ---
+// --- Autenticação e Sistema ---
 auth.onAuthStateChanged(user => {
     const panel = document.getElementById('admin-panel');
     const btn = document.getElementById('btn-admin');
@@ -132,8 +131,8 @@ function exportarDados() {
 }
 
 function importarDados() {
-    const input = prompt("Cole o JSON:");
-    if(input) db.ref('conteudo').set(JSON.parse(input)).then(() => alert("Atualizado!"));
+    const input = prompt("Cole o JSON da estrutura:");
+    if(input) db.ref('conteudo').set(JSON.parse(input)).then(() => alert("Dados importados!"));
 }
 
 renderizarPortal();
