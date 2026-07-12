@@ -35,7 +35,7 @@ body {
 #nav-links a { color: white; text-decoration: none; cursor: pointer; transition: 0.3s; padding: 10px; display: block; }
 #nav-links a:hover { color: var(--accent); }
 
-/* Ajuste Mobile - Corrige o empilhamento do menu */
+/* Ajuste Mobile */
 @media (max-width: 768px) {
     .hamburger { display: block; }
     #nav-links { 
@@ -49,6 +49,9 @@ body {
     }
     #nav-links ul li { width: 100%; text-align: center; }
 }
+
+/* Main - Garantindo que o rodapé fique no fim */
+main { flex: 1 0 auto; display: flex; flex-direction: column; }
 
 /* Painel Admin */
 .admin-wrapper { max-width: 800px; margin: 20px auto; padding: 20px; width: 100%; }
@@ -74,5 +77,6 @@ body {
 .btn-neon:hover { background: var(--accent); color: #000; }
 .btn-subtle { background: transparent; border: 1px solid #555; color: white; padding: 5px 10px; cursor: pointer; }
 
-footer { text-align: center; padding: 20px; font-size: 0.8rem; color: rgba(255,255,255,0.5); background: rgba(0,0,0,0.5); width: 100%; }
+/* Rodapé */
+footer { flex-shrink: 0; text-align: center; padding: 20px; font-size: 0.8rem; color: rgba(255,255,255,0.5); background: rgba(0,0,0,0.5); width: 100%; }
 .hidden { display: none; }
