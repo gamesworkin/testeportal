@@ -9,7 +9,7 @@
 body { 
     font-family: 'Segoe UI', sans-serif; color: white; 
     min-height: 100vh; display: flex; flex-direction: column; 
-    overflow-x: hidden; position: relative;
+    overflow-x: hidden;
 }
 
 /* Background */
@@ -21,41 +21,50 @@ body {
 .bg-animated::after { content: ''; position: absolute; inset: 0; background: var(--bg-dark); }
 @keyframes gradient { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
-/* Cabeçalho e Menu */
+/* Cabeçalho */
 #main-header { 
     display: flex; justify-content: space-between; align-items: center; 
-    padding: 20px 40px; background: rgba(0, 0, 0, 0.6); position: relative; z-index: 10;
+    padding: 20px 40px; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(5px);
 }
+.logo { font-weight: bold; font-size: 1.5rem; }
 .hamburger { display: none; background: none; border: none; color: white; font-size: 24px; cursor: pointer; }
+
 #nav-links ul { display: flex; list-style: none; gap: 20px; }
 #nav-links a { color: white; text-decoration: none; cursor: pointer; transition: 0.3s; padding: 10px; }
 #nav-links a:hover { color: var(--accent); }
 
-/* Mobile */
 @media (max-width: 768px) {
     .hamburger { display: block; }
-    #nav-links { display: none; position: absolute; top: 100%; left: 0; width: 100%; background: #000; flex-direction: column; text-align: center; }
+    #nav-links { display: none; position: absolute; top: 80px; left: 0; width: 100%; background: #000; flex-direction: column; text-align: center; z-index: 100; }
     #nav-links.active { display: flex; }
 }
+
+/* Main */
+main { flex-grow: 1; display: flex; flex-direction: column; }
 
 /* Painel Admin */
 .admin-wrapper { max-width: 800px; margin: 20px auto; padding: 20px; width: 100%; }
 .admin-section { background: rgba(255,255,255,0.05); padding: 20px; border: 1px solid #444; border-radius: 10px; margin-bottom: 20px; display: flex; flex-direction: column; gap: 10px; }
+.admin-list { list-style: none; margin-top: 15px; }
 .admin-list li { display: flex; gap: 10px; align-items: center; padding: 8px; border-bottom: 1px solid #333; }
+.admin-section input, .admin-section textarea { padding: 10px; border-radius: 5px; border: 1px solid #444; background: #222; color: white; }
 
 /* Cards */
-main { flex-grow: 1; position: relative; z-index: 5; }
 .servicos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; padding: 40px; }
-.card { background: rgba(0,0,0,0.5); padding: 20px; border: 1px solid var(--accent); text-align: center; cursor: pointer; transition: 0.3s; position: relative; }
+.card { background: rgba(0,0,0,0.5); padding: 20px; border: 1px solid var(--accent); text-align: center; cursor: pointer; transition: 0.3s; }
 .card:hover { transform: translateY(-5px); box-shadow: var(--neon-shadow); }
 
 /* Modais */
 .modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); z-index: 1000; justify-content: center; align-items: center; }
 .modal-content { background: #111; padding: 30px; border: 2px solid var(--accent); border-radius: 15px; width: 90%; max-width: 450px; position: relative; }
-.close-modal { position: absolute; top: 10px; right: 20px; cursor: pointer; font-size: 24px; }
+.close-modal { position: absolute; top: 10px; right: 20px; cursor: pointer; font-size: 24px; color: white; }
+.input-group { display: flex; flex-direction: column; gap: 15px; margin: 20px 0; }
+.input-group input { padding: 15px; border-radius: 5px; border: 1px solid #444; background: #222; color: white; width: 100%; }
 
-/* Utilitários */
-.btn-neon { background: transparent; color: var(--accent); border: 2px solid var(--accent); padding: 10px; cursor: pointer; text-transform: uppercase; }
-.btn-subtle { background: transparent; border: 1px solid #555; color: white; padding: 5px; cursor: pointer; }
-footer { text-align: center; padding: 20px; background: rgba(0,0,0,0.5); width: 100%; z-index: 10; }
+/* Botões */
+.btn-neon { background: transparent; color: var(--accent); border: 2px solid var(--accent); padding: 10px; cursor: pointer; text-transform: uppercase; width: 100%; }
+.btn-neon:hover { background: var(--accent); color: #000; }
+.btn-subtle { background: transparent; border: 1px solid #555; color: white; padding: 5px 10px; cursor: pointer; }
+
+footer { text-align: center; padding: 20px; font-size: 0.8rem; color: rgba(255,255,255,0.5); background: rgba(0,0,0,0.5); width: 100%; }
 .hidden { display: none; }
