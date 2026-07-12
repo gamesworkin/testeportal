@@ -14,7 +14,7 @@
     <div class="bg-animated"></div>
 
     <header id="main-header">
-        <div></div> <!-- Espaço vazio -->
+        <div></div> 
         <nav id="nav-links">
             <ul id="menu-items"></ul>
         </nav>
@@ -23,35 +23,40 @@
 
     <main>
         <section id="vitrine" class="vitrine"></section>
-
         <section id="servicos" class="servicos-grid"></section>
 
+        <!-- Painel Administrativo Organizado -->
         <section id="admin-panel" class="hidden">
-            <h2>Painel Administrativo</h2>
-            
-            <div class="admin-controls">
-                <h3>Gerenciar Cabeçalho</h3>
-                <input type="text" id="menu-nome" placeholder="Nome do Link">
-                <label><input type="radio" name="tipo" value="link" checked> Link Direto</label>
-                <label><input type="radio" name="tipo" value="modal"> Modal</label>
-                <input type="text" id="menu-valor" placeholder="URL ou Conteúdo do Modal">
-                <button onclick="salvarMenu()" class="btn-neon">Adicionar Link</button>
-                <ul id="lista-menu-admin" class="admin-list"></ul>
-            </div>
+            <div class="admin-wrapper">
+                <h2>Painel Administrativo</h2>
+                
+                <div class="admin-section">
+                    <h3>Gestão de Cabeçalho</h3>
+                    <input type="text" id="menu-nome" placeholder="Nome do Link">
+                    <div class="radio-group">
+                        <label><input type="radio" name="tipo" value="link" checked> Link Direto</label>
+                        <label><input type="radio" name="tipo" value="modal"> Modal</label>
+                    </div>
+                    <input type="text" id="menu-valor" placeholder="URL ou Conteúdo do Modal">
+                    <button onclick="salvarMenu()" class="btn-neon">Adicionar Link</button>
+                    <ul id="lista-menu-admin" class="admin-list"></ul>
+                </div>
 
-            <div class="admin-controls">
-                <h3>Gerenciar Cards</h3>
-                <input type="text" id="card-titulo" placeholder="Título">
-                <input type="text" id="card-logo" placeholder="URL da Logo">
-                <textarea id="card-desc" placeholder="Descrição"></textarea>
-                <input type="text" id="card-link" placeholder="Link do botão 'Saiba Mais'">
-                <button onclick="salvarCard()" class="btn-neon">Adicionar Card</button>
-                <ul id="lista-cards-admin" class="admin-list"></ul>
-            </div>
+                <div class="admin-section">
+                    <h3>Gestão de Cards</h3>
+                    <input type="text" id="card-titulo" placeholder="Título">
+                    <input type="text" id="card-logo" placeholder="URL da Logo">
+                    <textarea id="card-desc" placeholder="Descrição"></textarea>
+                    <input type="text" id="card-link" placeholder="Link do botão 'Saiba Mais'">
+                    <button onclick="salvarCard()" class="btn-neon">Adicionar Card</button>
+                    <ul id="lista-cards-admin" class="admin-list"></ul>
+                </div>
 
-            <div class="admin-controls">
-                <button onclick="exportarDados()" class="btn-neon">Exportar JSON</button>
-                <button onclick="importarDados()" class="btn-neon">Importar JSON</button>
+                <div class="admin-section">
+                    <h3>Sistema</h3>
+                    <button onclick="exportarDados()" class="btn-neon">Exportar JSON</button>
+                    <button onclick="importarDados()" class="btn-neon">Importar JSON</button>
+                </div>
             </div>
         </section>
     </main>
@@ -72,7 +77,7 @@
     </div>
 
     <div id="modal-generic" class="modal">
-        <div class="modal-content">
+        <div class="modal-content modal-scroll">
             <span class="close-modal" onclick="document.getElementById('modal-generic').style.display='none'">&times;</span>
             <div id="modal-body"></div>
         </div>
