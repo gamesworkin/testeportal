@@ -10,60 +10,39 @@
     <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
 </head>
 <body>
-
     <div class="bg-animated"></div>
-
     <header id="main-header">
-        <div class="logo">Workin’Store</div>
-        <nav id="nav-links">
-            <ul id="menu-items"></ul>
-        </nav>
+        <div></div> <!-- Espaço vazio -->
+        <nav id="nav-links"><ul id="menu-items"></ul></nav>
         <button id="btn-admin" class="btn-subtle">Acesso Restrito</button>
     </header>
-
     <main>
-        <section id="vitrine" class="vitrine"></section>
         <section id="servicos" class="servicos-grid"></section>
-
-        <!-- Painel Administrativo -->
         <section id="admin-panel" class="hidden">
-            <h2>Gerenciamento do Portal</h2>
-            
-            <!-- Gestão do Cabeçalho -->
+            <h2>Painel Administrativo</h2>
             <div class="admin-controls">
-                <h3>Menu do Cabeçalho</h3>
-                <input type="text" id="menu-nome" placeholder="Nome do Link">
-                <label><input type="radio" name="tipo" value="link" checked> Link Direto</label>
+                <h3>Gerenciar Cabeçalho</h3>
+                <input type="text" id="menu-nome" placeholder="Nome">
+                <label><input type="radio" name="tipo" value="link" checked> Link</label>
                 <label><input type="radio" name="tipo" value="modal"> Modal</label>
-                <input type="text" id="menu-valor" placeholder="URL ou Conteúdo do Modal">
-                <button onclick="salvarMenu()" class="btn-neon">Salvar no Cabeçalho</button>
+                <input type="text" id="menu-valor" placeholder="URL ou Conteúdo">
+                <button onclick="salvarMenu()" class="btn-neon">Adicionar Link</button>
+                <ul id="lista-menu-admin"></ul>
             </div>
-
-            <!-- Gestão dos Cards -->
             <div class="admin-controls">
-                <h3>Cards de Serviço</h3>
+                <h3>Gerenciar Cards</h3>
                 <input type="text" id="card-titulo" placeholder="Título">
                 <input type="text" id="card-logo" placeholder="URL da Logo">
                 <textarea id="card-desc" placeholder="Descrição"></textarea>
-                <input type="text" id="card-link" placeholder="Link do botão 'Saiba Mais'">
-                <button onclick="salvarCard()" class="btn-neon">Salvar Card</button>
-            </div>
-
-            <div class="admin-controls">
-                <button onclick="exportarDados()" class="btn-neon">Exportar JSON</button>
-                <button onclick="importarDados()" class="btn-neon">Importar JSON</button>
+                <input type="text" id="card-link" placeholder="Link de Acesso">
+                <button onclick="salvarCard()" class="btn-neon">Adicionar Card</button>
+                <ul id="lista-cards-admin"></ul>
             </div>
         </section>
     </main>
-
-    <footer>
-        <p>&copy; Workin’Store 2026 - Todos os direitos reservados</p>
-    </footer>
-
-    <!-- Modais -->
-    <div id="modal-admin" class="modal"><div class="modal-content"><input type="email" id="email-admin" placeholder="Email"><input type="password" id="password-admin" placeholder="Senha"><button id="login-btn" class="btn-neon">Entrar</button></div></div>
+    <footer><p>&copy; Workin’Store 2026 - Todos os direitos reservados</p></footer>
+    <div id="modal-admin" class="modal"><div class="modal-content"><h3>Login</h3><input type="email" id="email-admin" placeholder="Email"><input type="password" id="password-admin" placeholder="Senha"><button id="login-btn" class="btn-neon">Entrar</button></div></div>
     <div id="modal-generic" class="modal"><div class="modal-content"><span class="close-modal" onclick="document.getElementById('modal-generic').style.display='none'">&times;</span><div id="modal-body"></div></div></div>
-
     <script src="script.js"></script>
 </body>
 </html>
