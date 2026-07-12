@@ -15,7 +15,8 @@ const db = firebase.database();
 
 // --- Navegação Mobile ---
 function toggleMenu() {
-    document.getElementById('nav-links').classList.toggle('active');
+    const nav = document.getElementById('nav-links');
+    nav.classList.toggle('active');
 }
 
 // --- Lógica de Login ---
@@ -57,7 +58,7 @@ function renderizarPortal() {
         
         const menuArray = Object.entries(data.menu || {}).sort((a,b) => (a[1].ordem || 0) - (b[1].ordem || 0));
         menuArray.forEach(([id, item]) => {
-            nav.innerHTML += `<li><a onclick="abrirMenu('${item.nome}', '${item.valor}', '${item.tipo}')">${item.nome}</a></li>`;
+            nav.innerHTML += `<li><a onclick="abrirMenu('${item.nome}', '${item.valor}', '${item.tipo}'); toggleMenu();">${item.nome}</a></li>`;
             listMenu.innerHTML += `<li>${item.nome} <button onclick="editar('menu', '${id}')" class="btn-subtle">Editar</button> <button onclick="deletar('menu/${id}')" class="btn-subtle">Excluir</button></li>`;
         });
 
@@ -85,8 +86,8 @@ function salvarMenu() {
         ordem: parseInt(document.getElementById('menu-ordem').value) || 0,
         tipo: document.querySelector('input[name="tipo"]:checked').value 
     };
-    if(editId) { db.ref('conteudo/menu/' + editId).set(data); editId = null; }
-    else db.ref('conteudo/menu').push(data);
+    if(editId) { db.ref('conteudo/menu/' + editId).set(data); editId = null; alert("Editado com sucesso!"); }
+    else { db.ref('conteudo/menu').push(data); alert("Adicionado com sucesso!"); }
 }
 
 function salvarCard() {
@@ -97,8 +98,8 @@ function salvarCard() {
         desc: document.getElementById('card-desc').value, 
         link: document.getElementById('card-link').value 
     };
-    if(editId) { db.ref('conteudo/cards/' + editId).set(data); editId = null; }
-    else db.ref('conteudo/cards').push(data);
+    if(editId) { db.ref('conteudo/cards/' + editId).set(data); editId = null; alert("Editado com sucesso!"); }
+    else { db.ref('conteudo/cards').push(data); alert("Adicionado com sucesso!"); }
 }
 
 function editar(tipo, id) {
