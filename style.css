@@ -53,12 +53,14 @@ body {
 /* Main */
 main { flex: 1 0 auto; display: flex; flex-direction: column; }
 
-/* Painel Admin */
+/* Painel Admin - Visual Aprimorado */
 .admin-wrapper { max-width: 800px; margin: 20px auto; padding: 20px; width: 100%; }
-.admin-section { background: rgba(255,255,255,0.05); padding: 20px; border: 1px solid #444; border-radius: 10px; margin-bottom: 20px; display: flex; flex-direction: column; gap: 10px; }
-.admin-list { list-style: none; margin-top: 15px; }
-.admin-list li { display: flex; gap: 10px; align-items: center; padding: 8px; border-bottom: 1px solid #333; justify-content: space-between; }
-.admin-section input, .admin-section textarea { padding: 10px; border-radius: 5px; border: 1px solid #444; background: #222; color: white; width: 100%; }
+.admin-section { background: rgba(0,0,0,0.6); padding: 25px; border: 1px solid #333; border-radius: 12px; margin-bottom: 25px; display: flex; flex-direction: column; gap: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+.admin-section h3 { color: var(--accent); border-bottom: 1px solid #444; padding-bottom: 10px; margin-bottom: 10px; }
+.admin-list { list-style: none; margin-top: 15px; border-top: 1px solid #444; pt-15px; }
+.admin-list li { display: flex; gap: 10px; align-items: center; padding: 12px 5px; border-bottom: 1px solid #222; justify-content: space-between; font-size: 0.95rem; }
+.admin-section input, .admin-section textarea { padding: 12px; border-radius: 6px; border: 1px solid #555; background: #1a1a1a; color: white; width: 100%; }
+.radio-group { display: flex; gap: 15px; margin: 5px 0; }
 
 /* Cards */
 .servicos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; padding: 40px; }
@@ -73,50 +75,11 @@ main { flex: 1 0 auto; display: flex; flex-direction: column; }
 .input-group input { padding: 15px; border-radius: 5px; border: 1px solid #444; background: #222; color: white; width: 100%; }
 
 /* Botões */
-.btn-neon { background: transparent; color: var(--accent); border: 2px solid var(--accent); padding: 10px; cursor: pointer; text-transform: uppercase; width: 100%; }
+.btn-neon { background: transparent; color: var(--accent); border: 2px solid var(--accent); padding: 12px; cursor: pointer; text-transform: uppercase; width: 100%; font-weight: bold; border-radius: 6px; }
 .btn-neon:hover { background: var(--accent); color: #000; }
-.btn-subtle { background: transparent; border: 1px solid #555; color: white; padding: 5px 10px; cursor: pointer; }
+.btn-subtle { background: #333; border: 1px solid #555; color: white; padding: 6px 12px; cursor: pointer; border-radius: 4px; font-size: 0.8rem; }
+.btn-subtle:hover { background: #444; }
 
 /* Rodapé */
 footer { flex-shrink: 0; text-align: center; padding: 20px; font-size: 0.8rem; color: rgba(255,255,255,0.5); background: rgba(0,0,0,0.5); width: 100%; }
 .hidden { display: none; }
-
-.whatsapp-float {
-    position: fixed;
-    width: 60px;
-    height: 60px;
-    bottom: 40px;
-    right: 40px;
-    background-color: #25d366;
-    color: #FFF;
-    border-radius: 50px;
-    text-align: center;
-    font-size: 30px;
-    box-shadow: 2px 2px 10px rgba(0,0,0,0.3);
-    z-index: 1000;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: transform 0.3s ease;
-}
-
-.whatsapp-float img {
-    width: 70%;
-    height: 70%;
-}
-
-.whatsapp-float:hover {
-    transform: scale(1.1);
-    background-color: #128c7e;
-}
-
-/* Ajuste para celular */
-@media (max-width: 480px) {
-    .whatsapp-float {
-        width: 50px;
-        height: 50px;
-        bottom: 20px;
-        right: 20px;
-    }
-}
-
