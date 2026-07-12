@@ -13,118 +13,106 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.database();
 
-// --- Lógica de Login e Estado Admin ---
-const loginBtn = document.getElementById('login-btn');
-const btnAdmin = document.getElementById('btn-admin');
+// --- Carregamento e Renderização ---
+function renderizarPortal() {
+    db.ref('conteudo').on('value', (snapshot) => {
+        const data = snapshot.val() || {};
+        
+        // Render Cabeçalho
+        const nav = document.getElementById('menu-items');
+        nav.innerHTML = '';
+        Object.values(data.menu || {}).forEach(item => {
+            const li = document.createElement('li');
+            const a = document.createElement('a');
+            a.innerText = item.nome;
+            a.onclick = () => {
+                if (item.tipo === 'link') window.open(item.valor, '_blank');
+                else abrirModalGenerico(item.nome, item.valor);
+            };
+            li.appendChild(a);
+            nav.appendChild(li);
+        });
 
-// Botão de Login (com evento de enter)
-const loginModal = document.getElementById('modal-admin');
-document.addEventListener('keypress', (e) => {
-    if (e.key === 'Enter' && loginModal.style.display === 'flex') {
-        processarLogin();
-    }
-});
-
-loginBtn.addEventListener('click', processarLogin);
-
-async function processarLogin() {
-    const email = document.getElementById('email-admin').value;
-    const pass = document.getElementById('password-admin').value;
-    
-    loginBtn.innerText = "Logando...";
-    loginBtn.disabled = true;
-
-    try {
-        await auth.signInWithEmailAndPassword(email, pass);
-        alert("Bem-vindo, Administrador!");
-        location.reload();
-    } catch (err) {
-        alert("Erro: " + err.message);
-        loginBtn.innerText = "Entrar";
-        loginBtn.disabled = false;
-    }
-}
-
-// Controle do Botão (Acesso Restrito / Logout)
-auth.onAuthStateChanged(user => {
-    if (user && user.email === "admin@admin.com") {
-        document.getElementById('admin-panel').classList.remove('hidden');
-        btnAdmin.innerText = "Logout";
-        btnAdmin.onclick = () => auth.signOut().then(() => location.reload());
-    } else {
-        btnAdmin.innerText = "Acesso Restrito";
-        btnAdmin.onclick = () => loginModal.style.display = 'flex';
-    }
-});
-
-// --- Gestão de Dados (CRUD) ---
-function carregarConteudo() {
-    db.ref('conteudo/servicos').on('value', (snapshot) => {
-        const data = snapshot.val();
+        // Render Cards
         const grid = document.getElementById('servicos');
         grid.innerHTML = '';
-        if (data) {
-            Object.entries(data).forEach(([id, s]) => {
-                grid.innerHTML += `
-                    <div class="card" onclick="abrirModalServico('${s.titulo}', '${s.desc}')">
-                        <h3>${s.titulo}</h3>
-                    </div>`;
-            });
-        }
+        Object.values(data.cards || {}).forEach(c => {
+            grid.innerHTML += `
+                <div class="card" onclick="abrirModalServico('${c.titulo}', '${c.desc}', '${c.logo}', '${c.link}')">
+                    <img src="${c.logo}" alt="logo">
+                    <h3>${c.titulo}</h3>
+                </div>`;
+        });
     });
 }
 
-function adicionarCard() {
-    const titulo = document.getElementById('add-titulo').value;
-    const desc = document.getElementById('add-desc').value;
-    
-    if(titulo && desc) {
-        db.ref('conteudo/servicos').push({ titulo, desc })
-            .then(() => {
-                alert("Card adicionado com sucesso!");
-                document.getElementById('add-titulo').value = '';
-                document.getElementById('add-desc').value = '';
-            });
-    } else {
-        alert("Preencha todos os campos!");
-    }
+// --- Funções Administrativas ---
+function salvarMenu() {
+    const nome = document.getElementById('menu-nome').value;
+    const valor = document.getElementById('menu-valor').value;
+    const tipo = document.querySelector('input[name="tipo"]:checked').value;
+    db.ref('conteudo/menu').push({ nome, valor, tipo }).then(() => alert("Menu salvo!"));
 }
 
-// Funções de Importação/Exportação JSON
+function salvarCard() {
+    const titulo = document.getElementById('card-titulo').value;
+    const logo = document.getElementById('card-logo').value;
+    const desc = document.getElementById('card-desc').value;
+    const link = document.getElementById('card-link').value;
+    db.ref('conteudo/cards').push({ titulo, logo, desc, link }).then(() => alert("Card salvo!"));
+}
+
+// --- Modais ---
+function abrirModalGenerico(titulo, texto) {
+    document.getElementById('modal-body').innerHTML = `<h2>${titulo}</h2><p>${texto}</p>`;
+    document.getElementById('modal-generic').style.display = 'flex';
+}
+
+function abrirModalServico(titulo, desc, logo, link) {
+    document.getElementById('modal-body').innerHTML = `
+        <img src="${logo}" style="width:50px">
+        <h2>${titulo}</h2>
+        <p>${desc}</p>
+        <button class="btn-neon" onclick="window.open('${link}', '_blank')">Acessar</button>
+    `;
+    document.getElementById('modal-generic').style.display = 'flex';
+}
+
+// --- Autenticação ---
+auth.onAuthStateChanged(user => {
+    const panel = document.getElementById('admin-panel');
+    const btn = document.getElementById('btn-admin');
+    if (user && user.email === "admin@admin.com") {
+        panel.classList.remove('hidden');
+        btn.innerText = "Logout";
+        btn.onclick = () => auth.signOut().then(() => location.reload());
+    } else {
+        btn.innerText = "Acesso Restrito";
+        btn.onclick = () => document.getElementById('modal-admin').style.display = 'flex';
+    }
+});
+
+document.getElementById('login-btn').onclick = async () => {
+    const email = document.getElementById('email-admin').value;
+    const pass = document.getElementById('password-admin').value;
+    try {
+        await auth.signInWithEmailAndPassword(email, pass);
+        location.reload();
+    } catch (e) { alert(e.message); }
+};
+
+// Import/Export
 function exportarDados() {
     db.ref('conteudo').once('value').then(snap => {
-        const data = JSON.stringify(snap.val(), null, 2);
-        const blob = new Blob([data], {type: "application/json"});
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url; a.download = "backup_portal.json"; a.click();
+        const blob = new Blob([JSON.stringify(snap.val())], {type: "application/json"});
+        const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = "backup.json"; a.click();
     });
 }
 
 function importarDados() {
-    const input = prompt("Cole o JSON da estrutura:");
-    if (input) {
-        try {
-            db.ref('conteudo').set(JSON.parse(input))
-                .then(() => alert("Dados atualizados com sucesso!"));
-        } catch (e) { alert("JSON inválido!"); }
-    }
+    const input = prompt("Cole o JSON:");
+    if(input) db.ref('conteudo').set(JSON.parse(input)).then(() => alert("Atualizado!"));
 }
 
-// --- Modais ---
-function abrirModalServico(titulo, desc) {
-    const modal = document.getElementById('modal-generic');
-    document.getElementById('modal-body').innerHTML = `
-        <h2>${titulo}</h2>
-        <p style="margin: 20px 0;">${desc}</p>
-        <button class="btn-neon" onclick="alert('Redirecionando...')">Acessar</button>
-    `;
-    modal.style.display = 'flex';
-}
+renderizarPortal();
 
-window.onclick = (e) => {
-    if (e.target.classList.contains('modal')) e.target.style.display = 'none';
-};
-
-// Inicialização
-carregarConteudo();
