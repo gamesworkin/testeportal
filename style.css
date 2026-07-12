@@ -7,74 +7,63 @@
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body { 
-    font-family: 'Segoe UI', sans-serif; 
-    color: white; 
-    overflow-x: hidden; 
+    font-family: 'Segoe UI', sans-serif; color: white; 
+    min-height: 100vh; display: flex; flex-direction: column; 
 }
 
 /* Background Animado */
 .bg-animated {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
     background: linear-gradient(45deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #9400d3);
-    background-size: 400% 400%;
-    animation: gradient 15s ease infinite;
+    background-size: 400% 400%; animation: gradient 15s ease infinite;
 }
 .bg-animated::after { content: ''; position: absolute; inset: 0; background: var(--bg-dark); }
 
 @keyframes gradient { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
 
-/* Cabeçalho e Navegação */
+/* Cabeçalho */
 #main-header { 
     display: flex; justify-content: space-between; align-items: center; 
     padding: 20px 40px; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(5px);
 }
 
-#nav-links ul { display: flex; list-style: none; gap: 20px; }
-#nav-links a { color: white; text-decoration: none; transition: 0.3s; text-shadow: var(--neon-shadow); }
-#nav-links a:hover { color: var(--accent); }
+/* Botão Acesso Restrito (Discreto) */
+.btn-subtle {
+    background: transparent; border: 1px solid rgba(255,255,255,0.3); color: rgba(255,255,255,0.5);
+    padding: 5px 10px; cursor: pointer; font-size: 0.8rem; transition: 0.3s;
+}
+.btn-subtle:hover { color: var(--accent); border-color: var(--accent); }
 
-/* Botões Neon */
+/* Ajuste Modal Login */
+.login-box { display: flex; flex-direction: column; gap: 15px; }
+.input-group { display: flex; flex-direction: column; gap: 10px; }
+.input-group input { 
+    padding: 12px; border-radius: 5px; border: 1px solid #444; 
+    background: #222; color: white; width: 100%; 
+}
+
+/* Painel e Rodapé */
+main { flex: 1; }
+footer { text-align: center; padding: 20px; font-size: 0.8rem; color: rgba(255,255,255,0.5); }
+
+/* Estilos de Botões Neon (Mantidos) */
 .btn-neon {
     background: transparent; color: var(--accent); border: 2px solid var(--accent);
     padding: 10px 20px; cursor: pointer; transition: 0.4s;
     text-transform: uppercase; letter-spacing: 2px;
-    box-shadow: 0 0 5px var(--accent), inset 0 0 5px var(--accent);
 }
-.btn-neon:hover { 
-    background: var(--accent); color: #000; 
-    box-shadow: 0 0 20px var(--accent), 0 0 40px var(--accent); 
-    animation: pulse 1.5s infinite;
-}
-
-@keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.05); } 100% { transform: scale(1); } }
+.btn-neon:hover { background: var(--accent); color: #000; box-shadow: var(--neon-shadow); }
 
 /* Grid de Cards */
-.servicos-grid { 
-    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
-    gap: 25px; padding: 40px; 
-}
-
-.card { 
-    background: rgba(255,255,255,0.05); padding: 20px; border: 1px solid var(--accent);
-    text-align: center; cursor: pointer; transition: 0.3s;
-}
-.card:hover { transform: translateY(-10px); box-shadow: var(--neon-shadow); }
+.servicos-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; padding: 40px; }
+.card { background: rgba(255,255,255,0.05); padding: 20px; border: 1px solid var(--accent); text-align: center; cursor: pointer; transition: 0.3s; }
+.card:hover { transform: scale(1.05); box-shadow: var(--neon-shadow); }
 
 /* Modais */
-.modal { 
-    display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); 
-    justify-content: center; align-items: center; z-index: 1000;
-}
-.modal-content { 
-    background: #111; padding: 40px; border: 2px solid var(--accent); 
-    border-radius: 15px; text-align: center; width: 90%; max-width: 500px; 
-}
+.modal { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.9); justify-content: center; align-items: center; z-index: 1000; }
+.modal-content { background: #111; padding: 40px; border: 2px solid var(--accent); border-radius: 15px; width: 90%; max-width: 400px; }
 
-/* Responsividade Mobile */
 @media (max-width: 768px) {
     .servicos-grid { grid-template-columns: 1fr 1fr; }
-    #main-header { flex-direction: column; gap: 15px; }
-    #nav-links ul { flex-direction: column; align-items: center; }
 }
-
 .hidden { display: none; }
