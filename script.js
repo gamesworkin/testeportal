@@ -9,39 +9,64 @@ const firebaseConfig = {
   appId: "1:803334158041:web:5ef4069e7ec3a5973970c8"
 };
 
+
 firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.database();
 
-// --- Carregamento e Renderização ---
+// --- Lógica de Login ---
+const loginBtn = document.getElementById('login-btn');
+const loginModal = document.getElementById('modal-admin');
+
+async function processarLogin() {
+    const email = document.getElementById('email-admin').value;
+    const pass = document.getElementById('password-admin').value;
+    
+    loginBtn.innerText = "Logando...";
+    loginBtn.disabled = true;
+
+    try {
+        await auth.signInWithEmailAndPassword(email, pass);
+        location.reload();
+    } catch (err) {
+        alert("Erro: " + err.message);
+        loginBtn.innerText = "Entrar";
+        loginBtn.disabled = false;
+    }
+}
+
+loginBtn.addEventListener('click', processarLogin);
+document.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter' && loginModal.style.display === 'flex') processarLogin();
+});
+
+// --- Gestão de Conteúdo (Renderização e Deleção) ---
 function renderizarPortal() {
     db.ref('conteudo').on('value', (snapshot) => {
         const data = snapshot.val() || {};
         
         // Render Cabeçalho
         const nav = document.getElementById('menu-items');
-        nav.innerHTML = '';
-        Object.values(data.menu || {}).forEach(item => {
-            const li = document.createElement('li');
-            const a = document.createElement('a');
-            a.innerText = item.nome;
-            a.onclick = () => {
-                if (item.tipo === 'link') window.open(item.valor, '_blank');
-                else abrirModalGenerico(item.nome, item.valor);
-            };
-            li.appendChild(a);
-            nav.appendChild(li);
+        const listMenu = document.getElementById('lista-menu-admin');
+        nav.innerHTML = ''; listMenu.innerHTML = '';
+        
+        Object.entries(data.menu || {}).forEach(([id, item]) => {
+            nav.innerHTML += `<li><a href="#" onclick="abrirMenu('${item.nome}', '${item.valor}', '${item.tipo}')">${item.nome}</a></li>`;
+            listMenu.innerHTML += `<li>${item.nome} <button onclick="deletar('menu/${id}')" class="btn-subtle">Excluir</button></li>`;
         });
 
         // Render Cards
         const grid = document.getElementById('servicos');
-        grid.innerHTML = '';
-        Object.values(data.cards || {}).forEach(c => {
+        const listCards = document.getElementById('lista-cards-admin');
+        grid.innerHTML = ''; listCards.innerHTML = '';
+        
+        Object.entries(data.cards || {}).forEach(([id, c]) => {
             grid.innerHTML += `
                 <div class="card" onclick="abrirModalServico('${c.titulo}', '${c.desc}', '${c.logo}', '${c.link}')">
                     <img src="${c.logo}" alt="logo">
                     <h3>${c.titulo}</h3>
                 </div>`;
+            listCards.innerHTML += `<li>${c.titulo} <button onclick="deletar('cards/${id}')" class="btn-subtle">Excluir</button></li>`;
         });
     });
 }
@@ -51,7 +76,7 @@ function salvarMenu() {
     const nome = document.getElementById('menu-nome').value;
     const valor = document.getElementById('menu-valor').value;
     const tipo = document.querySelector('input[name="tipo"]:checked').value;
-    db.ref('conteudo/menu').push({ nome, valor, tipo }).then(() => alert("Menu salvo!"));
+    if(nome && valor) db.ref('conteudo/menu').push({ nome, valor, tipo }).then(() => alert("Link salvo!"));
 }
 
 function salvarCard() {
@@ -59,20 +84,27 @@ function salvarCard() {
     const logo = document.getElementById('card-logo').value;
     const desc = document.getElementById('card-desc').value;
     const link = document.getElementById('card-link').value;
-    db.ref('conteudo/cards').push({ titulo, logo, desc, link }).then(() => alert("Card salvo!"));
+    if(titulo) db.ref('conteudo/cards').push({ titulo, logo, desc, link }).then(() => alert("Card salvo!"));
+}
+
+function deletar(path) {
+    if(confirm("Deseja excluir este item?")) db.ref('conteudo/' + path).remove();
 }
 
 // --- Modais ---
-function abrirModalGenerico(titulo, texto) {
-    document.getElementById('modal-body').innerHTML = `<h2>${titulo}</h2><p>${texto}</p>`;
-    document.getElementById('modal-generic').style.display = 'flex';
+function abrirMenu(nome, valor, tipo) {
+    if (tipo === 'link') window.open(valor, '_blank');
+    else {
+        document.getElementById('modal-body').innerHTML = `<h2>${nome}</h2><p>${valor}</p>`;
+        document.getElementById('modal-generic').style.display = 'flex';
+    }
 }
 
 function abrirModalServico(titulo, desc, logo, link) {
     document.getElementById('modal-body').innerHTML = `
         <img src="${logo}" style="width:50px">
         <h2>${titulo}</h2>
-        <p>${desc}</p>
+        <p style="margin: 20px 0;">${desc}</p>
         <button class="btn-neon" onclick="window.open('${link}', '_blank')">Acessar</button>
     `;
     document.getElementById('modal-generic').style.display = 'flex';
@@ -88,20 +120,10 @@ auth.onAuthStateChanged(user => {
         btn.onclick = () => auth.signOut().then(() => location.reload());
     } else {
         btn.innerText = "Acesso Restrito";
-        btn.onclick = () => document.getElementById('modal-admin').style.display = 'flex';
+        btn.onclick = () => loginModal.style.display = 'flex';
     }
 });
 
-document.getElementById('login-btn').onclick = async () => {
-    const email = document.getElementById('email-admin').value;
-    const pass = document.getElementById('password-admin').value;
-    try {
-        await auth.signInWithEmailAndPassword(email, pass);
-        location.reload();
-    } catch (e) { alert(e.message); }
-};
-
-// Import/Export
 function exportarDados() {
     db.ref('conteudo').once('value').then(snap => {
         const blob = new Blob([JSON.stringify(snap.val())], {type: "application/json"});
@@ -115,4 +137,3 @@ function importarDados() {
 }
 
 renderizarPortal();
-
