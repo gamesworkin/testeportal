@@ -13,15 +13,21 @@ firebase.initializeApp(firebaseConfig);
 const auth = firebase.auth();
 const db = firebase.database();
 
-// --- Lógica de Login e Admin ---
+// --- Lógica de Login e Estado Admin ---
 const loginBtn = document.getElementById('login-btn');
 const btnAdmin = document.getElementById('btn-admin');
 
-btnAdmin.addEventListener('click', () => {
-    document.getElementById('modal-admin').style.display = 'flex';
+// Botão de Login (com evento de enter)
+const loginModal = document.getElementById('modal-admin');
+document.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter' && loginModal.style.display === 'flex') {
+        processarLogin();
+    }
 });
 
-loginBtn.addEventListener('click', async () => {
+loginBtn.addEventListener('click', processarLogin);
+
+async function processarLogin() {
     const email = document.getElementById('email-admin').value;
     const pass = document.getElementById('password-admin').value;
     
@@ -30,34 +36,35 @@ loginBtn.addEventListener('click', async () => {
 
     try {
         await auth.signInWithEmailAndPassword(email, pass);
-        alert("Login efetuado com sucesso!");
-        document.getElementById('modal-admin').style.display = 'none';
-        location.reload(); 
+        alert("Bem-vindo, Administrador!");
+        location.reload();
     } catch (err) {
         alert("Erro: " + err.message);
         loginBtn.innerText = "Entrar";
         loginBtn.disabled = false;
     }
-});
+}
 
-// Checagem de Admin
+// Controle do Botão (Acesso Restrito / Logout)
 auth.onAuthStateChanged(user => {
     if (user && user.email === "admin@admin.com") {
         document.getElementById('admin-panel').classList.remove('hidden');
+        btnAdmin.innerText = "Logout";
+        btnAdmin.onclick = () => auth.signOut().then(() => location.reload());
+    } else {
+        btnAdmin.innerText = "Acesso Restrito";
+        btnAdmin.onclick = () => loginModal.style.display = 'flex';
     }
 });
 
-// --- Funções de Dados ---
+// --- Gestão de Dados (CRUD) ---
 function carregarConteudo() {
-    db.ref('conteudo').on('value', (snapshot) => {
+    db.ref('conteudo/servicos').on('value', (snapshot) => {
         const data = snapshot.val();
-        if (!data) return;
-        
-        // Renderizar Cards
         const grid = document.getElementById('servicos');
         grid.innerHTML = '';
-        if (data.servicos) {
-            Object.entries(data.servicos).forEach(([id, s]) => {
+        if (data) {
+            Object.entries(data).forEach(([id, s]) => {
                 grid.innerHTML += `
                     <div class="card" onclick="abrirModalServico('${s.titulo}', '${s.desc}')">
                         <h3>${s.titulo}</h3>
@@ -67,11 +74,27 @@ function carregarConteudo() {
     });
 }
 
-// Funções de Admin (JSON)
+function adicionarCard() {
+    const titulo = document.getElementById('add-titulo').value;
+    const desc = document.getElementById('add-desc').value;
+    
+    if(titulo && desc) {
+        db.ref('conteudo/servicos').push({ titulo, desc })
+            .then(() => {
+                alert("Card adicionado com sucesso!");
+                document.getElementById('add-titulo').value = '';
+                document.getElementById('add-desc').value = '';
+            });
+    } else {
+        alert("Preencha todos os campos!");
+    }
+}
+
+// Funções de Importação/Exportação JSON
 function exportarDados() {
     db.ref('conteudo').once('value').then(snap => {
-        const data = snap.val();
-        const blob = new Blob([JSON.stringify(data, null, 2)], {type: "application/json"});
+        const data = JSON.stringify(snap.val(), null, 2);
+        const blob = new Blob([data], {type: "application/json"});
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
         a.href = url; a.download = "backup_portal.json"; a.click();
@@ -79,14 +102,12 @@ function exportarDados() {
 }
 
 function importarDados() {
-    const input = prompt("Cole o JSON da estrutura do portal aqui:");
+    const input = prompt("Cole o JSON da estrutura:");
     if (input) {
         try {
             db.ref('conteudo').set(JSON.parse(input))
-                .then(() => alert("Dados importados com sucesso!"));
-        } catch (e) {
-            alert("Erro no formato JSON!");
-        }
+                .then(() => alert("Dados atualizados com sucesso!"));
+        } catch (e) { alert("JSON inválido!"); }
     }
 }
 
@@ -96,19 +117,14 @@ function abrirModalServico(titulo, desc) {
     document.getElementById('modal-body').innerHTML = `
         <h2>${titulo}</h2>
         <p style="margin: 20px 0;">${desc}</p>
-        <button class="btn-neon" onclick="window.location.href='#'">Acessar</button>
+        <button class="btn-neon" onclick="alert('Redirecionando...')">Acessar</button>
     `;
     modal.style.display = 'flex';
 }
 
-// Fechamento de modais
 window.onclick = (e) => {
     if (e.target.classList.contains('modal')) e.target.style.display = 'none';
 };
-
-document.addEventListener('keydown', (e) => {
-    if(e.key === 'Escape') document.querySelectorAll('.modal').forEach(m => m.style.display = 'none');
-});
 
 // Inicialização
 carregarConteudo();
