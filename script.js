@@ -155,7 +155,6 @@ function renderCards(){
     card.innerHTML = `
       <img src="${c.logo}" alt="${c.title}" onerror="this.style.display='none'">
       <h3>${c.title}</h3>
-      <p>${c.desc}</p>
     `;
     card.addEventListener('click', ()=>{
       $('#cardModalLogo').src = c.logo;
