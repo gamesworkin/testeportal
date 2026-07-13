@@ -1,94 +1,160 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Workin’Store | Portal</title>
-    <link rel="stylesheet" href="style.css">
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-database-compat.js"></script>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Workin'Store - Portal Games & Acessórios PS2</title>
+<meta name="description" content="Portal Workin'Store: blogs de games e loja de acessórios para PlayStation 2 - Kits OPL, memory cards, controles, pendrives e mais." />
+<link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
-    <div class="bg-animated"></div>
+<!-- BACKGROUND ANIMADO -->
+<div class="bg-spectrum"></div>
+<div class="bg-overlay"></div>
 
-    <header id="main-header">
-        <div class="logo">Workin’Store</div>
-        <button class="hamburger" onclick="toggleMenu()">☰</button>
-        <nav id="nav-links">
-            <ul id="menu-items"></ul>
-        </nav>
-        <button id="btn-admin" class="btn-subtle">Acesso Restrito</button>
-    </header>
-
-    <main>
-        <section id="servicos" class="servicos-grid"></section>
-
-        <section id="admin-panel" class="hidden">
-            <div class="admin-wrapper">
-                <h2>Painel Administrativo</h2>
-                
-                <div class="admin-section">
-                    <h3>Gestão de Cabeçalho</h3>
-                    <input type="text" id="menu-nome" placeholder="Nome do Link">
-                    <input type="text" id="menu-valor" placeholder="URL ou Conteúdo">
-                    <input type="number" id="menu-ordem" placeholder="Ordem (ex: 1)">
-                    <div class="radio-group">
-                        <label><input type="radio" name="tipo" value="link" checked> Link Direto</label>
-                        <label><input type="radio" name="tipo" value="modal"> Modal</label>
-                    </div>
-                    <button onclick="salvarMenu()" class="btn-neon">Salvar Link</button>
-                    <ul id="lista-menu-admin" class="admin-list"></ul>
-                </div>
-
-                <div class="admin-section">
-                    <h3>Gestão de Cards</h3>
-                    <input type="text" id="card-titulo" placeholder="Título">
-                    <input type="text" id="card-logo" placeholder="URL da Logo">
-                    <input type="number" id="card-ordem" placeholder="Ordem">
-                    <textarea id="card-desc" placeholder="Descrição"></textarea>
-                    <input type="text" id="card-link" placeholder="Link do botão 'Saiba Mais'">
-                    <button onclick="salvarCard()" class="btn-neon">Salvar Card</button>
-                    <ul id="lista-cards-admin" class="admin-list"></ul>
-                </div>
-
-                <div class="admin-section">
-                    <h3>Sistema</h3>
-                    <button onclick="exportarDados()" class="btn-neon">Exportar JSON</button>
-                    <button onclick="importarDados()" class="btn-neon">Importar JSON</button>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <p>&copy; Workin’Store 2026 - Todos os direitos reservados</p>
-    </footer>
-
-    <div id="modal-admin" class="modal">
-        <div class="modal-content login-box">
-            <span class="close-modal" onclick="document.getElementById('modal-admin').style.display='none'">&times;</span>
-            <h3>Login Administrativo</h3>
-            <div class="input-group">
-                <input type="email" id="email-admin" placeholder="Email">
-                <input type="password" id="password-admin" placeholder="Senha">
-            </div>
-            <button id="login-btn" class="btn-neon">Entrar</button>
-        </div>
+<!-- CABEÇALHO -->
+<header id="mainHeader">
+  <div class="header-inner">
+    <div class="brand">
+      <span class="brand-mark">W</span>
+      <span class="brand-name">Workin'<span>Store</span></span>
     </div>
+    <button class="menu-toggle" id="menuToggle" aria-label="Abrir menu">
+      <span></span><span></span><span></span>
+    </button>
+    <nav id="mainNav">
+      <ul id="navLinks"></ul>
+    </nav>
+  </div>
+</header>
 
-    <div id="modal-generic" class="modal">
-        <div class="modal-content">
-            <span class="close-modal" onclick="document.getElementById('modal-generic').style.display='none'">&times;</span>
-            <div id="modal-body"></div>
-        </div>
+<!-- HERO / VITRINE -->
+<section class="hero">
+  <div class="hero-text">
+    <h1>Bem-vindo ao <span class="glow-text">Workin'Store</span></h1>
+    <p>Games, acessórios PS2 e conteúdo exclusivo em um só portal.</p>
+  </div>
+  <div class="showcase" id="showcase">
+    <!-- imagens da vitrine geradas via JS -->
+  </div>
+</section>
+
+<!-- SERVIÇOS / CARDS -->
+<section class="services">
+  <h2 class="section-title">Nossos Serviços</h2>
+  <div class="cards-grid" id="cardsGrid"></div>
+</section>
+
+<!-- RODAPÉ -->
+<footer>
+  <p>© <span id="year"></span> Workin'Store. Todos os direitos reservados.</p>
+  <button id="adminBtn" class="admin-btn">Acesso Restrito</button>
+</footer>
+
+<!-- MODAL: CARD (visualização público) -->
+<div class="modal" id="cardModal">
+  <div class="modal-content">
+    <button class="modal-close" data-close>&times;</button>
+    <img id="cardModalLogo" src="" alt="" class="modal-logo" />
+    <h3 id="cardModalTitle"></h3>
+    <p id="cardModalDesc"></p>
+    <a id="cardModalLink" href="#" target="_blank" class="btn-primary">Acessar</a>
+  </div>
+</div>
+
+<!-- MODAL: LINK DO CABEÇALHO -->
+<div class="modal" id="linkModal">
+  <div class="modal-content">
+    <button class="modal-close" data-close>&times;</button>
+    <h3 id="linkModalTitle"></h3>
+    <p id="linkModalBody"></p>
+    <a id="linkModalBtn" href="#" target="_blank" class="btn-primary">Saiba mais</a>
+  </div>
+</div>
+
+<!-- MODAL: LOGIN ADMIN -->
+<div class="modal" id="loginModal">
+  <div class="modal-content small">
+    <button class="modal-close" data-close>&times;</button>
+    <h3>Acesso Restrito</h3>
+    <form id="loginForm">
+      <input type="email" id="loginEmail" placeholder="E-mail" required />
+      <input type="password" id="loginPassword" placeholder="Senha" required />
+      <button type="submit" id="loginSubmit" class="btn-primary">Entrar</button>
+      <p class="error-msg" id="loginError"></p>
+    </form>
+  </div>
+</div>
+
+<!-- PAINEL ADMINISTRATIVO -->
+<div class="admin-panel" id="adminPanel">
+  <div class="admin-header">
+    <h2>Painel Administrativo</h2>
+    <div>
+      <button id="logoutBtn" class="btn-secondary">Sair</button>
+      <button class="modal-close" data-close-admin>&times;</button>
     </div>
+  </div>
 
-	<a href="https://wa.me/5588988470190" target="_blank" class="whatsapp-float">
-    		<img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
-		</a>
-	
-    <script src="script.js"></script>
+  <div class="admin-tabs">
+    <button class="tab-btn active" data-tab="tabHeader">Cabeçalho</button>
+    <button class="tab-btn" data-tab="tabCards">Cards</button>
+    <button class="tab-btn" data-tab="tabIO">Import / Export</button>
+  </div>
+
+  <!-- Aba Cabeçalho -->
+  <div class="tab-content active" id="tabHeader">
+    <h3>Gerenciar Links do Cabeçalho</h3>
+    <form id="headerForm">
+      <input type="hidden" id="headerId" />
+      <input type="text" id="headerLabel" placeholder="Nome do link (ex: Home)" required />
+      <select id="headerType">
+        <option value="link">Link direto</option>
+        <option value="modal">Modal</option>
+      </select>
+      <input type="url" id="headerUrl" placeholder="URL (para link direto ou botão 'Saiba mais')" />
+      <input type="text" id="headerTitle" placeholder="Título do modal (se modal)" />
+      <textarea id="headerBody" placeholder="Corpo do texto (se modal)"></textarea>
+      <button type="submit" class="btn-primary">Salvar Link</button>
+      <button type="button" id="headerCancel" class="btn-secondary">Cancelar</button>
+    </form>
+    <ul class="admin-list" id="headerList"></ul>
+  </div>
+
+  <!-- Aba Cards -->
+  <div class="tab-content" id="tabCards">
+    <h3>Gerenciar Cards de Serviço</h3>
+    <form id="cardForm">
+      <input type="hidden" id="cardId" />
+      <input type="text" id="cardTitle" placeholder="Título" required />
+      <textarea id="cardDesc" placeholder="Descrição" required></textarea>
+      <input type="url" id="cardLogo" placeholder="URL da logo (GitHub raw)" required />
+      <input type="url" id="cardLink" placeholder="Link do serviço" required />
+      <button type="submit" class="btn-primary">Salvar Card</button>
+      <button type="button" id="cardCancel" class="btn-secondary">Cancelar</button>
+    </form>
+    <ul class="admin-list" id="cardList"></ul>
+  </div>
+
+  <!-- Aba Import/Export -->
+  <div class="tab-content" id="tabIO">
+    <h3>Importar / Exportar</h3>
+    <div class="io-actions">
+      <button id="exportBtn" class="btn-primary">Exportar JSON</button>
+      <label class="btn-secondary">
+        Importar JSON
+        <input type="file" id="importFile" accept="application/json" hidden />
+      </label>
+    </div>
+    <p class="hint">Exporta e importa todos os links do cabeçalho e cards de serviço.</p>
+  </div>
+</div>
+
+<!-- Firebase SDK (compat para simplicidade) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
