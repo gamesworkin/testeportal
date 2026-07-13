@@ -132,7 +132,7 @@ function renderHeaderLinks(){
       li.appendChild(btn);
     } else {
       const a = document.createElement('a');
-      a.href = item.url || '#'; a.textContent = item.label; a.target = '_blank';
+      a.href = item.url || '#'; a.textContent = item.label;
       li.appendChild(a);
     }
     ul.appendChild(li);
