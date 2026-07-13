@@ -5,13 +5,13 @@
    (Console Firebase → Project Settings → Config)
 ========================================================= */
 const firebaseConfig = {
-  apiKey: "SUA_API_KEY",
-  authDomain: "SEU_PROJETO.firebaseapp.com",
-  databaseURL: "https://SEU_PROJETO-default-rtdb.firebaseio.com",
-  projectId: "SEU_PROJETO",
-  storageBucket: "SEU_PROJETO.appspot.com",
-  messagingSenderId: "SEU_SENDER_ID",
-  appId: "SEU_APP_ID"
+  apiKey: "AIzaSyDiAP2IvsfPac29qzFA71sbLYuizVxZ9HQ",
+  authDomain: "portal-workin-store.firebaseapp.com",
+  databaseURL: "https://portal-workin-store-default-rtdb.firebaseio.com",
+  projectId: "portal-workin-store",
+  storageBucket: "portal-workin-store.firebasestorage.app",
+  messagingSenderId: "803334158041",
+  appId: "1:803334158041:web:5ef4069e7ec3a5973970c8"
 };
 
 /* =========================================================
