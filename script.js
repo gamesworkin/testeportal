@@ -23,7 +23,7 @@ const showcaseImages = [
   "https://cdn.awsli.com.br/600x700/783/783632/produto/226554356/kit-16-jogos-2a8imlso9t.jpg",
   "https://cdn.awsli.com.br/800x800/1224/1224482/produto/282987937/screenshot-2024-07-10-at-16-03-22-xt2162-jpg--imagem-jp------pjdrv7c6lv.png",
   "https://raw.githubusercontent.com/USUARIO/REPO/main/produtos/controle-ps2.png",
-  "https://raw.githubusercontent.com/USUARIO/REPO/main/produtos/pendrive.png"
+  "https://raw.githubusercontent.com/USUARIO/REPO/main/produtos/pendrive.png",
    "https://shoppingtudao.com.br/wp-content/uploads/2022/11/15140011612_15138162260_ksopdkaspodkasopdpasda.png"
 ];
 
