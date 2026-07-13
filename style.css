@@ -39,11 +39,16 @@ header{
 }
 .brand-name span{background:linear-gradient(90deg,#00eaff,#ff00cc);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
 
-#mainNav ul{display:flex;gap:8px;flex-wrap:wrap}
+#mainNav ul{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+#mainNav li{display:flex}
 #mainNav li a,#mainNav li button{
-  padding:8px 16px;border-radius:8px;font-weight:600;font-size:.95rem;
+  display:inline-flex;align-items:center;justify-content:center;
+  height:38px;line-height:1;
+  padding:0 16px;border-radius:8px;font-weight:600;font-size:.95rem;
+  font-family:inherit;color:inherit;
   position:relative;transition:all .3s;
   background:rgba(255,255,255,.05);
+  border:0;cursor:pointer;white-space:nowrap;
 }
 #mainNav li a:hover,#mainNav li button:hover{
   background:rgba(255,255,255,.12);
@@ -244,7 +249,8 @@ footer{
   }
   #mainNav.open{max-height:500px}
   #mainNav ul{flex-direction:column;padding:12px;gap:6px}
-  #mainNav li a,#mainNav li button{display:block;width:100%;text-align:left}
+  #mainNav li{width:100%}
+  #mainNav li a,#mainNav li button{width:100%;justify-content:flex-start;height:auto;padding:10px 14px}
   .cards-grid{grid-template-columns:repeat(2,1fr);gap:14px}
   .card{padding:16px}
   .card img{width:60px;height:60px}
